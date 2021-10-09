@@ -1,0 +1,45 @@
+body{
+    background-color: #FFE766;
+}
+
+#whiteBackground {
+    background-color: #FFFFFF;
+    margin: 7% 0;
+    border-radius: 25px;
+}
+
+h1{
+    color: #483698;
+    font-weight: 700;
+    font-family: 'Comfortaa', cursive;
+}
+
+h5{
+    font-family: 'Open Sans', sans-serif;
+}
+
+.l1 input{
+    border: 1px solid #483698;
+}
+
+h6{
+    font-family: 'Comfortaa', cursive;
+    font-weight: 900;
+    color: #483698;
+}
+
+.progress-bar{
+    background-color: #483698;
+}
+
+@media only screen and (max-width: 576px)  {
+
+    #whiteBackground{
+        margin-top: 20% ;
+        margin-bottom: 0% !important;
+        border-radius:  25px 25px 0 0;
+    }
+        
+        
+}
+

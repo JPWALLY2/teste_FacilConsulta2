@@ -2,10 +2,23 @@ import { createStore } from 'vuex'
 
 export default createStore({
   state: {
-  },
-  mutations: {
+    pro:[]
   },
   actions: {
+    addPr({commit}, pr){
+      return new Promise( resolve => {
+        setTimeout(() => {
+          pr.id = Date.now()
+          commit('addPr', pr)
+          resolve(pr)
+        }, 1000)
+      })
+    }
+  },  
+  mutations: {
+    addPr(state, payload){
+      state.pro.push(payload)
+    }
   },
   modules: {
   }
