@@ -27,6 +27,8 @@
 
 <style lang="css" scoped>
 .btn{
+    font-family: 'Comfortaa', cursive;
+    font-weight: 700;
     color: black;
     background-color: #FBDE40;
     border-radius: 15px;
@@ -37,6 +39,7 @@
     transition: all 0.3s;
 }
 .btnList{
+    font-family: 'Comfortaa', cursive;
     background-color: #483698;
     color: #FFFFFF;
     padding: 0 85px;

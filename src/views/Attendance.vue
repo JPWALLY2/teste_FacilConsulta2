@@ -11,7 +11,6 @@
                         <h4 class="my-3 text-start">Detalhes do atendimento</h4>
 
                         <form @submit.prevent="addPro(pr)">
-                        <!-- <form > -->
                             <div class="mb-3 l1 col-lg-6">
                                 <label for="specialty" class="form-label">Especialidade principal*</label>
                                     <select name="specialty" class="form-select" v-model="pr.specialty" style=" border: 1px solid #483698;">
@@ -24,13 +23,15 @@
                                         <option value="urologia">Urologia</option>
                                     </select>
                             </div>
+                             <span v-for="err in errors" :key="err">{{err}} <br></span>
+                            
                             <div class="mb-3 l1 col-10 col-lg-4">
                                 <label for="price" class="form-label float-start">Informe o preço da consulta*</label>
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text">R$</span>
+                                        <span class=" rs input-group-text">R$</span>
                                     </div>
-                                <input type="text" v-model="pr.price" class="form-control price" placeholder="Valor" required>
+                                <input type="number" v-model="pr.price" class="form-control price" placeholder="Valor" step="0.01">
                             </div>
                             </div>
                             <div class="mb-3 l1 col-lg-6">
@@ -83,14 +84,10 @@
                                     <h6>2 de 2</h6>
                                 </div>
                                 </div>
-
-                                <div class="d-flex justify-content-start">
-                                <button class="btn btnproximo col-12 col-lg-6 mb-5">
-                                    <router-link to="/review">PRÓXIMO</router-link>
-                                    </button>
-                                </div>
-                            
+                            <!-- botão compartilhado -->
+                            <buttonNext></buttonNext>
                         </form>
+                        {{pro}}
                     </div>
                 </div>
                 
@@ -104,6 +101,14 @@
 
 <style lang="css" scoped>
 
+.errorInput input{
+  border-color: #DC3545;
+}
+
+span{
+  color: #DC3545 !important;
+}
+
 i {
     text-decoration: none;
     color: #483698;
@@ -116,7 +121,7 @@ h4{
     font-size: 26px;
 }
 
-span{
+.rs{
     background-color: #483698 !important;
     color: #FFFFFF !important;
     border-radius: 10px 0 0 10px !important;
@@ -148,27 +153,6 @@ span{
     transform: scale(1.5);
 }
 
-.btnproximo{
-    background-color: #483698;
-    font-size: 20px;
-    padding: 3px 10px;
-    border: none;
-    border-radius: 25px;
-}
-
-.btnproximo:hover{
-    transform: scale(0.9);
-    transition: all 0.3s;
-}
-
-a {
-    text-decoration: none;
-    color: #FFFFFF;
-}
-
- a:hover{
-    color: #FFFFFF;
-}
 
 
     @media only screen and (max-width: 576px)  {
@@ -192,16 +176,76 @@ a {
 </style>
 
 <script>
+import buttonNext from '../components/buttonNext.vue'
  export default{
-     data(){
-       return { pro: [], pr: {}};
+      components:{
+       buttonNext
      },
-      //função addPro
-       addPro(pr){
-         pr.id = Date.now();
-         this.pro.push(pr);
-
+    data(){
+       return {
+         pr: {
+           specialty: null,
+           price: null,
+            money: null,
+            pix: null,
+            card: null,
+                one: null,
+                two:null,
+                tree: null
+           },
+         errors:[],
+         loading: false
+         };
+     },
+      computed: {
+       pro(){
+         return this.$store.state.pro;
        }
+     },
+      methods:{
+      //função addPro
+       async addPro(pr){
+           this.errors = [];
+
+            if(this.pr.specialty == null || this.pr.specialty == ''){
+            this.errors.push('Especialidade é obrigatório')
+          }
+          if(this.pr.price == null || this.pr.price == ''){
+            this.errors.push('Preço é obrigatório')
+          }
+          if(this.pr.price < 50.00 || this.pr.price > 350.00){
+            this.errors.push('O valor deve ser entre 50,00 á 350,00 reais')
+          }
+
+          if(this.pr.money == null || this.pr.money == '' && 
+            this.pr.pix == null || this.pr.pix == '' && 
+            this.pr.card == null || this.pr.card == ''){
+              this.errors.push('Forma de pagamento é obrigatório')
+          }
+
+          if(this.pr.money == true && this.pr.pix == true ||
+             this.pr.money == true && this.pr.card == true ||
+             this.pr.pix == true && this.pr.card == true){
+            this.errors.push('Selecione apenas uma forma de pagamento')
+          }
+
+           if(this.pr.card == true){
+               if(this.pr.one == null && this.pr.two == null && this.pr.tree == null){
+                   this.errors.push('Selecione uma forma de parcelamento')
+               }
+          }
+
+           if( this.errors == 0){
+               try{
+                   this.loading = true;
+                   await this.$store.dispatch("addPr", pr)
+               }finally{
+                   this.loading = false
+               }
+
+           }
+       }
+     }
      }
      
 </script>

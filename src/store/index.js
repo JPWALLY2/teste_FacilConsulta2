@@ -2,7 +2,7 @@ import { createStore } from 'vuex'
 
 export default createStore({
   state: {
-    pro:[]
+    pro:[],
   },
   actions: {
     addPr({commit}, pr){
@@ -11,7 +11,7 @@ export default createStore({
           pr.id = Date.now()
           commit('addPr', pr)
           resolve(pr)
-        }, 1000)
+        }, 500)
       })
     }
   },  

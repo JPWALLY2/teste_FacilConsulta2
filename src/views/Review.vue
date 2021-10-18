@@ -87,9 +87,11 @@ i {
 }
 
 #review .btn{
+    font-family: 'Comfortaa', cursive;
     background-color: #FBDE40;
     border-radius: 15px;
     color: black;
+    font-weight: 700;
 }
 
 .btn:hover{
@@ -126,36 +128,10 @@ a{
 
 <script>
 
-//  export default{
-//      name: "app", 
-//      data(){
-//        return { pr: {}, loading: false};
-//      },
-//      computed: {
-//        pro(){
-//          return this.$store.state.pro;
-//        }
-//      },
-//      methods:{
-//        //função addPro
-//        async addPr(pr){
-//          try{
-//            this.loading = true;
-//            await this.$store.dispatch('addPr', pr)
-//          }finally{
-//            this.loading = false
-
-//          }
-
-//        }
-//      },
-     
-//    }
-
-import Pro from '@/components/professional';
+import professional from '../components/professional.vue';
 
 export default {
-    components: {Pro},
+    components: {professional},
     computed: {
        pro(){
          return this.$store.state.pro;

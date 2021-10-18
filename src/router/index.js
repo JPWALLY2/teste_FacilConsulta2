@@ -3,6 +3,7 @@ import Professional from '../views/Professional.vue'
 import Attendance from '../views/Attendance.vue'
 import Review from '../views/Review.vue'
 import Conclusion from '../views/Conclusion.vue'
+import testeValidation from '../views/teste.vue'
 
 const routes = [
   {
@@ -28,6 +29,12 @@ const routes = [
     path: '/conclusion',
     name: 'Conclusion',
     component: Conclusion
+   
+  },
+  {
+    path: '/teste',
+    name: 'testeValidation',
+    component: testeValidation
    
   }
 ]
