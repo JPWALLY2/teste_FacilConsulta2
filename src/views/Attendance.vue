@@ -22,8 +22,8 @@
                                         <option value="psiquiatria">Psiquiatria</option>
                                         <option value="urologia">Urologia</option>
                                     </select>
+                                    <span v-for="errs in errorsS" :key="errs">{{errs}} <br></span>
                             </div>
-                             <span v-for="err in errors" :key="err">{{err}} <br></span>
                             
                             <div class="mb-3 l1 col-10 col-lg-4">
                                 <label for="price" class="form-label float-start">Informe o preço da consulta*</label>
@@ -33,9 +33,11 @@
                                     </div>
                                 <input type="number" v-model="pr.price" class="form-control price" placeholder="Valor" step="0.01">
                             </div>
+                            <span v-for="errp in errorsP" :key="errp">{{errp}} <br></span>
                             </div>
                             <div class="mb-3 l1 col-lg-6">
                                 <label for="paymentMethods" class="form-label mb-4">Formas de pagamento da consulta*</label>
+                                <span v-for="errm in errorsM" :key="errm"><br>{{errm}} <br></span>
                                 <div class="card mb-3">
                                     <div class="card-body">
                                         <input type="checkbox"  v-model="pr.money"  class="mx-5"  name="checkbox" id="checkbox">
@@ -72,6 +74,7 @@
                                 </div>
                                        
                                 </div>
+                                <span v-for="errpa in errorsPa" :key="errpa">{{errpa}} <br></span>
                             </div>
 
                             <div class="col-lg-6 mb-3">
@@ -87,7 +90,7 @@
                             <!-- botão compartilhado -->
                             <buttonNext></buttonNext>
                         </form>
-                        {{pro}}
+                        <!-- {{pro}} -->
                     </div>
                 </div>
                 
@@ -193,7 +196,10 @@ import buttonNext from '../components/buttonNext.vue'
                 two:null,
                 tree: null
            },
-         errors:[],
+         errorsS:[],
+         errorsP:[],
+         errorsM:[],
+         errorsPa:[],
          loading: false
          };
      },
@@ -205,37 +211,41 @@ import buttonNext from '../components/buttonNext.vue'
       methods:{
       //função addPro
        async addPro(pr){
-           this.errors = [];
+           this.errorsS = [];
+           this.errorsP = [];
+           this.errorsPa = [];
+           this.errorsM = [];
 
             if(this.pr.specialty == null || this.pr.specialty == ''){
-            this.errors.push('Especialidade é obrigatório')
+            this.errorsS.push('Especialidade é obrigatório')
           }
           if(this.pr.price == null || this.pr.price == ''){
-            this.errors.push('Preço é obrigatório')
+            this.errorsP.push('Preço é obrigatório')
           }
           if(this.pr.price < 50.00 || this.pr.price > 350.00){
-            this.errors.push('O valor deve ser entre 50,00 á 350,00 reais')
+            this.errorsP.push('O valor deve ser entre 50,00 á 350,00 reais')
           }
 
           if(this.pr.money == null || this.pr.money == '' && 
             this.pr.pix == null || this.pr.pix == '' && 
             this.pr.card == null || this.pr.card == ''){
-              this.errors.push('Forma de pagamento é obrigatório')
+              this.errorsM.push('Forma de pagamento é obrigatório')
           }
 
           if(this.pr.money == true && this.pr.pix == true ||
              this.pr.money == true && this.pr.card == true ||
              this.pr.pix == true && this.pr.card == true){
-            this.errors.push('Selecione apenas uma forma de pagamento')
+            this.errorsM.push('Selecione apenas uma forma de pagamento')
           }
 
            if(this.pr.card == true){
                if(this.pr.one == null && this.pr.two == null && this.pr.tree == null){
-                   this.errors.push('Selecione uma forma de parcelamento')
+                   this.errorsPa.push('Selecione uma forma de parcelamento')
                }
           }
 
-           if( this.errors == 0){
+           if( this.errorsS == 0 && this.errorsP == 0
+           && this.errorsPa == 0 && this.errorsM == 0){
                try{
                    this.loading = true;
                    await this.$store.dispatch("addPr", pr)
